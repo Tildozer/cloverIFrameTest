@@ -1,10 +1,11 @@
 // import { useState } from 'react';
-import './App.css'
+import { useEffect } from 'react';
+import { AmountForm, CardNumber, CVV, ExpirationDate, PostalCode } from './components/';
 
 function App() {
   // const [price, setPrice] = useState(100)
   const clover = new Clover('75f1cf0597247715894bda808608ec28', {
-    merchantId: 'RCTSTAVI0010002'
+    merchantId: 'CJK9CRFTWRN31'
   }
   );
   const elements = clover.elements();
@@ -13,40 +14,63 @@ function App() {
   const cardCvv = elements.create('CARD_CVV');
   const cardPostalCode = elements.create('CARD_POSTAL_CODE');
   
-  cardNumber.mount('#card-number');
-  cardDate.mount('#card-date');
-  cardCvv.mount('#card-cvv');
-  cardPostalCode.mount('#card-postal-code');
-  return (
-    <form action="/charge" method="post" id="payment-form">
-      <div className="form-row top-row">
-        <div id="amount" className="field card-number">
-          <input name="amount" placeholder="Amount"/>
-        </div>
-      </div>
-      <div className="form-row top-row">
-        <div id="card-number" className="field card-number"></div>
-        <div className="input-errors" id="card-number-errors" role="alert"></div>
-      </div>
-      <div className="form-row">
-        <div id="card-date" className="field third-width"></div>
-        <div className="input-errors" id="card-date-errors" role="alert"></div>
-      </div>
+  // const cardResponse = document.getElementById('card-response');
+  // const displayCardNumberError = document.getElementById('card-number-errors');
+  // const displayCardDateError = document.getElementById('card-date-errors');
+  // const displayCardCvvError = document.getElementById('card-cvv-errors');
+  // const displayCardPostalCodeError = document.getElementById('card-postal-code-errors');
+
+  // Handle real-time validation errors from the card element
+  cardNumber.addEventListener('change', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardNumber changed ${JSON.stringify(ev)}`);
+  });
   
-      <div className="form-row">
-        <div id="card-cvv" className="field third-width"></div>
-        <div className="input-errors" id="card-cvv-errors" role="alert"></div>
-      </div>
-    
-      <div className="form-row">
-        <div id="card-postal-code" className="field third-width"></div>
-        <div className="input-errors" id="card-postal-code-errors" role="alert"></div>
-      </div>  
-      <div id="card-response" role="alert"></div>
-      <div className="button-container">
-        <button>Submit Payment</button>
-      </div>
-    </form>
+  cardNumber.addEventListener('blur', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardNumber blur ${JSON.stringify(ev)}`);
+  });
+  
+  cardDate.addEventListener('change', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardDate changed ${JSON.stringify(ev)}`);
+  });
+  
+  cardDate.addEventListener('blur', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardDate blur ${JSON.stringify(ev)}`);
+  });
+  
+  cardCvv.addEventListener('change', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardCvv changed ${JSON.stringify(ev)}`);
+  });
+  
+  cardCvv.addEventListener('blur', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardCvv blur ${JSON.stringify(ev)}`);
+  });
+  
+  cardPostalCode.addEventListener('change', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardPostalCode changed ${JSON.stringify(ev)}`);
+  });
+  
+  cardPostalCode.addEventListener('blur', function(ev: React.ChangeEvent<HTMLInputElement>) {
+    console.log(`cardPostalCode blur ${JSON.stringify(ev)}`);
+  });
+  useEffect(() => {
+    cardNumber.mount('#card-number');
+    cardDate.mount('#card-date');
+    cardCvv.mount('#card-cvv');
+    cardPostalCode.mount('#card-postal-code');
+  }, [])
+  
+  return (
+      <form action="/charge" method="post" id="payment-form">
+        <AmountForm />
+        <CardNumber />
+        <ExpirationDate />
+        <CVV />
+        <PostalCode />
+        <div id="card-response" role="alert"></div>
+        <div className="button-container">
+          <button>Submit Payment</button>
+        </div>
+      </form>
   )
 }
 
